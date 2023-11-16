@@ -4,7 +4,7 @@ version = 3
 
 [[package]]
 name = "bitread"
-version = "0.1.5"
+version = "0.1.6"
 dependencies = [
  "bitread_macro",
  "bitvec",
@@ -12,7 +12,7 @@ dependencies = [
 
 [[package]]
 name = "bitread_macro"
-version = "0.1.5"
+version = "0.1.6"
 dependencies = [
  "proc-macro2",
  "quote",

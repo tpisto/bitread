@@ -1,7 +1,8 @@
 [package]
 name = "bitread_macro"
-version = "0.1.5"
+version = "0.1.6"
 edition = "2021"
+license = "MIT"
 description = "The bitread library macros"
 documentation = "https://docs.rs/bitread"
 repository = "https://github.com/tpisto/bitread"
