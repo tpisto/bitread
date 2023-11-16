@@ -1,0 +1,11 @@
+[package]
+name = "bitread"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+bitread_lib = { path = "bitread_lib" }
+bitread_macro = { path = "bitread_macro" }
+bitvec = "1.0.1"
