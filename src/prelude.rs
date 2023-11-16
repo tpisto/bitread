@@ -1,4 +1,7 @@
-pub use bitread_lib::*;
+pub use crate::bitread::*;
+pub use crate::read_bits;
 pub use bitread_macro::*;
 pub use bitvec::prelude::*;
-pub use bitvec::view::BitView;
+pub mod bitvec {
+    pub use bitvec::*;
+}

@@ -1,12 +1,32 @@
+#![allow(unused)]
+pub mod bitread;
 pub mod prelude;
 // re-export of bitvec
 pub mod bitvec {
     pub use bitvec::prelude::*;
     pub use bitvec::view::BitView;
 }
-
-pub use bitread_lib::*;
+pub use bitread::*;
 pub use bitread_macro::*;
+
+// Define the read_bits macro
+#[macro_export]
+macro_rules! read_bits {
+    // Base case: when the number of bits to read is 0, return 0
+    ($data:expr, $offset:expr, 0, $type:ty) => {{
+        0 as $type
+    }};
+
+    // Case for extracting a single bit as bool
+    ($data:expr, $offset:expr, 1usize, bool) => {
+        $data[$offset]
+    };
+
+    // Recursive case: when there are bits left to read
+    ($data:expr, $offset:expr, $bits:expr, $type:ty) => {
+        $data[$offset..$offset + $bits].load::<$type>();
+    };
+}
 
 #[cfg(test)]
 mod tests {

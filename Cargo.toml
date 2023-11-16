@@ -7,11 +7,9 @@ license = "MIT"
 
 [workspace]
 members = [
-    "bitread_lib",
     "bitread_macro",
 ]
 
 [dependencies]
-bitread_lib = { path = "bitread_lib", version = "0.1.0" }
 bitread_macro = { path = "bitread_macro", version = "0.1.0" }
 bitvec = "1.0.1"
