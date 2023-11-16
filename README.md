@@ -9,6 +9,8 @@ The bitread library in Rust is designed to efficiently convert small binary data
 
 This approach ensures bitread is both user-friendly and versatile, catering to a wide range of binary data handling needs in Rust programming.
 
+!Please note that the library currently does not support endianess; it defaults to using the system's local endianess. This is an important consideration when working with data that may have specific endian requirements.
+
 Example:
 ```rust
 use bitread::prelude::*;
