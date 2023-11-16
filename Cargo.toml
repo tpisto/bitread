@@ -1,6 +1,6 @@
 [package]
 name = "bitread"
-version = "0.1.7"
+version = "0.1.8"
 edition = "2021"
 license = "MIT"
 description = "The bitread library in Rust is designed to efficiently convert small binary data into Rust structs"
@@ -13,5 +13,5 @@ members = [
 ]
 
 [dependencies]
-bitread_macro = { path = "bitread_macro", version = "0.1.6" }
+bitread_macro = { path = "bitread_macro", version = "0.1.8" }
 bitvec = "1.0.1"
