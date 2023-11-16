@@ -9,7 +9,7 @@ pub mod bitvec {
 pub use bitread::*;
 pub use bitread_macro::*;
 
-// Define the read_bits macro
+// Define the read_bits macro.
 #[macro_export]
 macro_rules! read_bits {
     // Base case: when the number of bits to read is 0, return 0
