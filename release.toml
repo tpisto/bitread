@@ -1,5 +1,5 @@
-push=false
-publish=false
+push=true
+publish=true
 consolidate-commits=true
 pre-release-commit-message="release: bitread and bitread_macro release"
 tag=true
