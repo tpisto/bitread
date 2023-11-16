@@ -13,5 +13,5 @@ members = [
 ]
 
 [dependencies]
-bitread_macro = { path = "bitread_macro" }
+bitread_macro = { path = "bitread_macro", version = "0.1.1" }
 bitvec = "1.0.1"
