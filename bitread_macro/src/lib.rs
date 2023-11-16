@@ -53,7 +53,19 @@ fn extract_fields_from_input(input: DeriveInput) -> Option<Vec<Field>> {
 fn generate_field_read_code(field: &Field) -> proc_macro2::TokenStream {
     let field_name = &field.ident;
     let field_type = &field.ty;
-    let (bits, map_fn_closure) = parse_attributes(&field.attrs);
+    let (bits, map_fn_closure, skip, default_expr) = parse_attributes(&field.attrs);
+
+    if skip {
+        if let Some(default) = default_expr {
+            return quote! {
+                let #field_name: #field_type = #default;
+            };
+        } else {
+            return quote! {
+                let #field_name = Default::default();
+            };
+        }
+    }
 
     let read_value = quote! {
         let #field_name = read_bits!(bitvec_bits, offset, #bits, #field_type);
@@ -76,9 +88,11 @@ fn generate_field_read_code(field: &Field) -> proc_macro2::TokenStream {
     }
 }
 
-fn parse_attributes(attrs: &[syn::Attribute]) -> (usize, Option<Expr>) {
+fn parse_attributes(attrs: &[syn::Attribute]) -> (usize, Option<Expr>, bool, Option<Expr>) {
     let mut bits = 0;
     let mut map_fn_closure = None;
+    let mut skip = false;
+    let mut default_expr = None;
 
     for attr in attrs {
         if attr.path.is_ident("bitrw") {
@@ -94,6 +108,15 @@ fn parse_attributes(attrs: &[syn::Attribute]) -> (usize, Option<Expr>) {
                                 if let Lit::Str(lit_str) = &name_value.lit {
                                     map_fn_closure = parse_str::<Expr>(&lit_str.value()).ok();
                                 }
+                            } else if name_value.path.is_ident("default") {
+                                if let Lit::Str(lit_str) = &name_value.lit {
+                                    default_expr = parse_str::<Expr>(&lit_str.value()).ok();
+                                }
+                            }
+                        }
+                        NestedMeta::Meta(Meta::Path(path)) => {
+                            if path.is_ident("skip") {
+                                skip = true;
                             }
                         }
                         _ => {}
@@ -103,7 +126,7 @@ fn parse_attributes(attrs: &[syn::Attribute]) -> (usize, Option<Expr>) {
         }
     }
 
-    (bits, map_fn_closure)
+    (bits, map_fn_closure, skip, default_expr)
 }
 
 fn extract_input_type_from_closure(closure_expr: &Expr) -> Box<syn::Type> {

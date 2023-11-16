@@ -6,8 +6,11 @@ pub mod bitvec {
     pub use bitvec::prelude::*;
     pub use bitvec::view::BitView;
 }
+
 pub use bitread::*;
 pub use bitread_macro::*;
+
+use crate::prelude::bitvec::order;
 
 // Define the read_bits macro.
 #[macro_export]
@@ -24,7 +27,7 @@ macro_rules! read_bits {
 
     // Recursive case: when there are bits left to read
     ($data:expr, $offset:expr, $bits:expr, $type:ty) => {
-        $data[$offset..$offset + $bits].load::<$type>();
+        $data[$offset..$offset + $bits].load::<$type>()
     };
 }
 
@@ -109,6 +112,54 @@ mod tests {
                 battery_voltage_volts: 4.844,
                 heading_degrees: 135,
                 speed_kmh: 105,
+            }
+        );
+    }
+
+    #[derive(BitRead, Debug, PartialEq)]
+    #[bitrw(endian = "little", bit_order = "lsb")]
+    pub struct SkipDefaultTest {
+        #[bitrw(bits = 1)]
+        last_fix_failed: bool,
+
+        #[bitrw(
+            bits = 23,
+            map = "|x: i32| { x as f64 * (180.0 / ((1 << 23) as f64)) }"
+        )]
+        latitude_degrees: f64,
+
+        #[bitrw(skip)]
+        longitude_degrees: f64,
+
+        #[bitrw(skip, default = "latitude_degrees * 2.0")]
+        latitude_degrees_times_two: f64,
+    }
+
+    #[test]
+    fn test_skip_and_default() {
+        let data = vec![
+            0xE8, // Last fix failed (0), 23 bit latitude (remaining bits)
+            0x25, // 23 bit latitude (continued)
+            0xF4, // 23 bit latitude (continued)
+            0x9B, // 24 bit longitude
+            0x9E, // 24 bit longitude (continued)
+            0x87, // 24 bit longitude (continued), In trip (1), Timestamp (remaining bits)
+            0x2B, // Timestamp (continued), Battery critical (0), Inactivity indicator alarm (1)
+            0x6A, // Inactivity timer (lower bits)
+            0x99, // Inactivity timer (upper bits)
+            0x2A, // Battery voltage
+            0xAB, // Heading, Speed
+        ];
+
+        let position_with_inactivity_timer = SkipDefaultTest::read_from(data.as_slice()).unwrap();
+
+        assert_eq!(
+            position_with_inactivity_timer,
+            SkipDefaultTest {
+                last_fix_failed: false,
+                latitude_degrees: -8.33338737487793,
+                longitude_degrees: 0.0,
+                latitude_degrees_times_two: -16.66677474975586,
             }
         );
     }
