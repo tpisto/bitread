@@ -1,8 +1,10 @@
 [package]
 name = "bitread_macro"
-version = "0.1.4"
+version = "0.1.5"
 edition = "2021"
-
+description = "The bitread library macros"
+documentation = "https://docs.rs/bitread"
+repository = "https://github.com/tpisto/bitread"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [lib]
