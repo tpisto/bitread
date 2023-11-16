@@ -1,12 +1,13 @@
 <img src="https://github.com/tpisto/bitread/assets/226244/93251fe8-f790-4c57-84d0-58ebc14e1254" width="100px">
 
 # bitread
-Rust library to simply convert small binary data to Rust structs. This expect you to put bit count to every field. Lsb0 and Msb0 supported.
-Only "bits" and "map" attributes available. Idea of this library is that:
+The bitread library in Rust is designed to efficiently convert small binary data into Rust structs. It requires users to specify the bit count for each field and supports both Lsb0 and Msb0 formats. The library is streamlined, offering only "bits" and "map" attributes. The core concept behind bitread is:
 
-- It works
-- It is really simple macro magic, so you can quickly adapt it to your specific needs
-- This is only small declarative macro on top of [bitvec](https://github.com/ferrilab/bitvec)
+- Reliability: It's built to work effectively.
+- Simplicity: Utilizing macro magic, it's easy to adapt for specific requirements.
+- Lightweight: It's a concise declarative macro built upon [bitvec](https://github.com/ferrilab/bitvec).
+
+This approach ensures bitread is both user-friendly and versatile, catering to a wide range of binary data handling needs in Rust programming.
 
 Example:
 ```rust
