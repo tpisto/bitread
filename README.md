@@ -1,7 +1,7 @@
 <img src="https://github.com/tpisto/bitread/assets/226244/93251fe8-f790-4c57-84d0-58ebc14e1254" width="100px">
 
 # bitread
-The bitread library in Rust is designed to efficiently convert small binary data into Rust structs. It requires users to specify the bit count for each field and supports both Lsb0 and Msb0 formats. The library is streamlined, offering only "bits" and "map" attributes. The core concept behind bitread is:
+The bitread library in Rust is designed to efficiently convert small binary data into Rust structs. It requires users to specify the bit count for each field and supports both Lsb0 and Msb0 formats. The library is streamlined, offering only "bits", "map", "skip" and "default" attributes. The core concept behind bitread is:
 
 - Reliability: It's built to work effectively.
 - Simplicity: Utilizing macro magic, it's easy to adapt for specific requirements.
@@ -26,6 +26,12 @@ pub struct PositionWithInactivityTimer {
         map = "|x: i32| { x as f64 * (180.0 / ((1 << 23) as f64)) }"
     )]
     latitude_degrees: f64,
+
+    #[bitrw(skip)]
+    longitude_degrees: f64
+
+    #[bitrw(skip, default = "latitude_degrees * 2.0")]
+    latitude_degrees_mul_2: f64
 }
 
 fn main() {
@@ -45,6 +51,8 @@ fn main() {
           PositionWithInactivityTimer {
               last_fix_failed: false,
               latitude_degrees: -8.33338737487793,
+              longitude_degrees: 0.0,
+              latitude_degrees_mul_2: -16,66677475,
           }
       );
 }
