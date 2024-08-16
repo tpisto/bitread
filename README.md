@@ -64,5 +64,3 @@ If you need write capabilities too and more features, you should check following
 [Deku](https://github.com/sharksforarms/deku): Deku is a Rust library designed for reading and writing binary data. It's particularly useful for parsing data structures in binary formats. The library's macro system simplifies the definition of data structures and provides an easy-to-use interface for serializing and deserializing data. Its documentation and examples can be found at Deku GitHub Repository.
 
 [Binrw](https://github.com/jam1garner/binrw): Binrw is another Rust library focused on binary data serialization and deserialization. It stands out for its ease of use and flexibility, allowing developers to easily define how data structures are read from and written to binary formats. The library supports various data types and offers customization options for complex use cases. More information, including usage examples, is available at Binrw GitHub Repository.
-
-Both libraries are well-suited for projects that require detailed control over binary data processing, offering a combination of performance and ease of use.
